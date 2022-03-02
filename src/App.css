@@ -1,0 +1,10 @@
+
+.container{
+  @apply max-w-6xl  mx-auto px-4
+}
+
+.input-typing{
+  padding: 0px !important;
+  width: 0px;
+  height: 0px
+}
