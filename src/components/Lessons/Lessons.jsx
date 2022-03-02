@@ -11,7 +11,7 @@ const Lessons = () => {
   return (
     <div>
       <div className="">
-        <h1>Typing Lessons</h1>
+        <h1 className="text-red-600 font-bold text-4xl mt-4 mb-2 uppercase">Typing Lessons</h1>
   
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
