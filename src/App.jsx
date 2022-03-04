@@ -44,9 +44,8 @@ function App() {
       { id: 24, title: "create HTML H1 ELEMENT", type: "word", text: "<h1>I am H1 Tag</h1>"},
       // { id: 25, title: "create HTML H1 ELEMENT", type: "word", text: `:; " ' ? <h1>I am H1 Tag</h1>`}
       // { id: 25, title: "Enter button", type: "word", text: "name ⏎ name"}
-      { id: 25, title: "Enter button", type: "word", text: "⏎\na b"}
+      { id: 25, title: "Enter button", type: "word", text: "a "}
     ]
-    
   })
   
   const params = useParams()
@@ -54,7 +53,6 @@ function App() {
   function getLesson(id){
     return typingState.lessons.find(l=>l.id === id)
   }
-  
   
   
   return (

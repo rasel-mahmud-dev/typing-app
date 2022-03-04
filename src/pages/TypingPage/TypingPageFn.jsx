@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {lazy} from 'react';
 import "./TypingPage.scss"
 
 
@@ -43,6 +43,7 @@ import comma from "../../asserts/hands/number_row/comma.png"
 import doubleQuotation from "../../asserts/hands/number_row/cotetion.png"
 import questionMark from "../../asserts/hands/number_row/questionMark.png"
 import tide from "../../asserts/hands/number_row/tide.png"
+import enter from "../../asserts/hands/number_row/enter.png"
 
 
 
@@ -66,8 +67,10 @@ import RenderTextBox from "../../components/RenderTextBox/RenderTextBox";
 
 const code = [
   { code: 9, key: "tab"},
+  { code: 13, key: '\n'}, // enter key press
   { code: 13, key: '⏎'},
   { code: 16, key: "shift"},
+  { code: 32, key: ''}, // space key code
   { code: 48, key: "0"}, { code: 48, key: ")", isPressedShift: true },
   { code: 49, key: "1"}, { code: 49, key: "!", isPressedShift: true },
   { code: 50, key: '2'}, { code: 50, key: "@", isPressedShift: true },
@@ -111,8 +114,6 @@ const code = [
   { code: 188, key: ","}, { code: 188, key: "<", isPressedShift: true},
   { code: 190, key: "."}, { code: 190, key: ">", isPressedShift: true},
   { code: 191, key: "/"}, { code: 191, key: "?", isPressedShift: true},
-  
-  {code: 32, key: ""},
   {code: 187, key: "="}
 ]
 
@@ -261,6 +262,7 @@ const TypingPage = (props)=> {
       "rt-reset": rtReset,
       "lt-reset": ltReset,
       " ": space,
+      "\n": enter
     },
     isTyping: false,
     text: [],
@@ -285,9 +287,13 @@ const TypingPage = (props)=> {
   const params = useParams()
   
   function getKeyCode(letter, isPressedShift=false){
+
     if(letter) {
       if (isPressedShift) {
         return code.find(c => c.key === letter && isPressedShift === c.isPressedShift)
+        
+      } else if(letter === "\n"){
+        return code.find(c => c.key === letter)
       } else {
         let space = letter.trim() === "".trim()
         if (space) {
@@ -322,8 +328,10 @@ const TypingPage = (props)=> {
   }, [state.isCompleted])
   
   function handleWindowKeyPress(e){
-    if(e.keyCode === 13){
-      onReadyChooseFirstLetter()
+    if(state.isCompleted &&  e.keyCode === 13){
+      setTimeout(()=>{
+        onReadyChooseFirstLetter(true)
+      }, 0)
     }
   }
   
@@ -566,7 +574,7 @@ const TypingPage = (props)=> {
   // }
   //
   
-  function onReadyChooseFirstLetter(){
+  function onReadyChooseFirstLetter(isEnterPressed){
   
     let post = context.getLesson(Number(params.id))
 
@@ -609,13 +617,15 @@ const TypingPage = (props)=> {
     updatedState.text = post.text.split("")
     updatedState.type = post.type ? post.type : "char"
     updatedState.title = post.title
-    updatedState.isTyping= true
+    if(isEnterPressed){
+      updatedState.isTyping =  true
+      textInput?.current?.focus()
+    }
     updatedState.currentKey = { code: -1, i: 0, letter: ""}
     updatedState.isCompleted = false
     updatedState.totalTimeConsume = 0
     updatedState.currentWord = 0
     setState(updatedState)
-    textInput.current?.focus()
   }
   
   
@@ -633,6 +643,8 @@ const TypingPage = (props)=> {
 
   
   function progress(state,  e, options){
+    
+    
     if(options.key === 'enter') {
       let isFinished = (state.nextLetter.i + 1) === state.text.length
       if (!isFinished) {
@@ -640,7 +652,7 @@ const TypingPage = (props)=> {
         // increase paragraph index
         // console.log(state.nextLetter, state.text)
         ii += 1
-        let nextWord = state.text[ii + 1]
+        let nextWord = state.text[ii]
         
         if (nextWord) {
           let updatedState = {...state}
@@ -659,7 +671,7 @@ const TypingPage = (props)=> {
           }
       
           updatedState.nextLetter = {
-            i: ii + 1,
+            i: ii,
             letter: nextWord,
             image: image
           }
@@ -670,9 +682,10 @@ const TypingPage = (props)=> {
           }
           setState(updatedState)
           keypressSound(true)
-          ii += 1 // skip line break space after click enter button
+          // ii += 1 // skip line break space after click enter button
         }
-    
+  
+
       } else {
         finalHit(state, e, options)
         // finished
@@ -784,7 +797,7 @@ const TypingPage = (props)=> {
       ...updatedState,
       isCompleted: true,
       isTyping: false,
-      totalTimeConsume: Date.now() - startTime,
+      totalTimeConsume: (Date.now() - startTime) / 1000,
       nextLetter: {
         i: ii,
         letter: nextWord,
@@ -799,26 +812,28 @@ const TypingPage = (props)=> {
   
   function handleKeyPress(e){
   
-    console.log(e.key + " = " + e.keyCode)
-    
+    // console.log(e.key + " = " + e.keyCode)
     if(state.isTyping) {
       let keyCode = getKeyCode(state.nextLetter.letter, e.shiftKey)
       // console.log(keyCode, state.nextLetter.letter)
-      // console.log(keyCode.code, e.keyCode, e.shiftKey)
-      
+     
       if (keyCode && (e.keyCode === keyCode.code)) {
         
         // handle when enter key but it not any letter
         // cause e.key === Enter && state.nextLetter.letter === ⏎
-       
+        
         if (state.nextLetter.letter === e.key) {
           let isFinished = (state.nextLetter.i + 1) === state.text.length
           progress(state,  e, {})
+          
+          
+        } else if(state.nextLetter.letter === (e.key === "enter" ?  "12323" : "\n") ){
+          progress(state,  e, {key: "enter" })
         }
         
         // when state.nextLetter.letter === ⏎
         else if(state.nextLetter.letter === "⏎") {
-          progress(state,  e, { key: "enter" })
+          // progress(state,  e, { key: "enter" })
           
         } else {
           // wrong key press
@@ -849,6 +864,20 @@ const TypingPage = (props)=> {
     // textInput.current?.focus()
   }
   
+  function handleFocus(){
+    setState({
+      ...state,
+      isTyping: true
+    })
+    textInput?.current?.focus()
+  }
+  
+  function handleBlur(){
+    setState({
+      ...state,
+      isTyping: false
+    })
+  }
   
   function calculateTimeNeed(){
 
@@ -890,7 +919,10 @@ const TypingPage = (props)=> {
     //
     //   wpm = Math.round(((word + 1) / min) * 60) || 0
     // }
-    return Math.round(charPS)
+    return {
+      charPS: Math.round(charPS),
+      time: sec
+    }
     
   }
   
@@ -913,8 +945,10 @@ const TypingPage = (props)=> {
           
         </div>
         
+        <CountDown isCompleted={state.isCompleted}  isTyping={state.isTyping} />
         
         <input
+          onBlur={handleBlur}
           className="input-typing"
           hidden={false}
           onChange={handleChange}
@@ -924,6 +958,7 @@ const TypingPage = (props)=> {
         />
         <div className="">
           <RenderTextBox
+            onFocus={handleFocus}
             paraType={state.type}
             nextLetter={state.nextLetter}
             text={state.text}
@@ -937,7 +972,8 @@ const TypingPage = (props)=> {
           <div className={["modal", state.isCompleted ? "show-modal  p-2" : ""].join(" ")}>
             <div>
               <h3 className="modal-title">Accuracy 70%</h3>
-              {state.isCompleted && <h3 className="modal-title">Typing Speed {calculateTimeNeed()} letter per second (lps)</h3> }
+              {state.isCompleted && <h3 className="modal-title">Typing Speed {calculateTimeNeed().charPS} letter per second (lps)</h3> }
+              {state.isCompleted && <h3 className="modal-title">Total Consume {state.totalTimeConsume}S</h3> }
               <div className="row justify-space-between p-2">
                 {/*<button onClick={this.makeTextToTyingWord} className="btn">Previews Level</button>*/}
                 <button onClick={handleStartTyping} className="btn">Restart</button>
@@ -948,7 +984,6 @@ const TypingPage = (props)=> {
             </div>
           </div>
         </div>
-        
         
         
         {!state.isCompleted && <Keyboard
@@ -962,6 +997,54 @@ const TypingPage = (props)=> {
     </div>
   )
 }
+
+
+let timeId
+function CountDown(props){
+  const { isCompleted,  isTyping}  = props
+  
+  const [second, setSecond] = React.useState(0)
+  
+  React.useEffect(()=>{
+    if(isTyping) {
+      calculateCountDown()
+    } else {
+      clearTimeout(timeId)
+    }
+  }, [second, isTyping])
+  
+  React.useEffect(()=>{
+    clearTimeout(timeId)
+    setSecond(0)
+  }, [isCompleted])
+  
+  function calculateCountDown(){
+    clearTimeout(timeId)
+    timeId = setTimeout(() => {
+      setSecond(second + 1)
+    }, 1000)
+  }
+  
+  function handlePause(e) {
+    if(!isTyping) {
+      clearTimeout(timeId)
+    }
+  }
+  
+  function handleCountDown(){
+    if(isTyping) {
+      calculateCountDown()
+    }
+  }
+
+  
+  return (
+    <div>
+      {  <h1 className="text-2xl text-center">Start on: {second} Second</h1> }
+    </div>
+  )
+}
+
 
 export default TypingPage;
 

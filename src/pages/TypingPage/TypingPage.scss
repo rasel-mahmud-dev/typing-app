@@ -13,16 +13,12 @@ $tablet-width: 950px;
   }
 }
 
-html{
-  //background: #e8e8e8;
-}
+
 body{
   margin: 0px;
   padding: 0px;
-  background-image: linear-gradient(
-      335deg
-    , #ff8989, #6ffbb429, #8d8dff);
-    //min-width: 100%;
+  background-image: linear-gradient(314deg, #ff9dd4c7, rgb(133 179 255 / 50%));
+  //background-image: linear-gradient(314deg, #ff9dd4, #8d8dff);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: top;
@@ -41,12 +37,18 @@ body{
   padding: 10px;
   background: #ffffff38;
   width: 100%;
-  border-radius: 5px;
   cursor: pointer;
-  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  border: 3px solid #e1e1e1;
+  transition: all .3s ease-in;
+  &.active-border{
+    border: 3px solid #ff65bb9e;
+    box-shadow: 1px 3px 7px -1px #7a7a7a;
+  }
   &:hover,
   &:focus{
-    border: 1px solid #ffacac87;
+    border: 3px solid #ff65bb9e;
+    box-shadow: 1px 3px 7px -1px #7a7a7a;
   }
   p{
     display: flex;
@@ -160,9 +162,6 @@ body{
   color: white;
 }
 
-.active-border{
-    border: 1px solid #ffacac87;
-}
 .speed-title{
   color: #ffffff;
   font-size: 16px;
@@ -207,8 +206,10 @@ body{
   background: #474bff12;
   transform: translateY(-100vh);
   transition: all .5s ease;
-  border-radius: 5px;
+  //border-radius: 5px;
   position: fixed;
+  border-radius: 10px;
+  border: 3px solid rgba(253, 253, 253, 0.29);
   &-title{
     text-align: center;
   }

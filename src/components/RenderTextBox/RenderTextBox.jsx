@@ -1,58 +1,63 @@
 import React from 'react';
 import p from "../../asserts/hands/p.png";
 
+
+
+
+
 const RenderTextBox = (props) => {
-	const { nextLetter, text, isTyping, paraType, handleStartTyping} = props
+	const { nextLetter, text, isTyping, paraType, handleStartTyping, onFocus} = props
 	
 	function isNewLine(letter){
-		// console.log(letter)
 		return letter === "\n"
 	}
 	
-
 	
 	return (
-		<div onClick={handleStartTyping} className={[
+		<div onClick={onFocus} className={[
 			"para-text-box",
 			isTyping ? "active-border":"",
 			paraType === "word" ? "word-view" : "letter-view",
 		
 		].join(" ")}>
+		
 			<p>{text && text.map((t, index)=> {
 				let line = isNewLine(t)
-				// if(t !== "\n"){
+				
 					if(!line) {
 						if (nextLetter.i === index) {
-							return <div key={index} className={["letter", isTyping ? "active-letter" : ""].join(" ")}>
-						<span> <span>{t === " " ? '\u00A0' : (
-							t
-						)}</span></span>
-								<span style={{position: "absolute"}} className="cursor"/>
-							</div>
+							return (
+								<div key={index} className={["letter", isTyping ? "active-letter" : ""].join(" ")}>
+									<span> <span>{t === " " ? '\u00A0' : t}</span></span>
+									<span style={{position: "absolute"}} className="cursor"/>
+								</div>
+							)
+							
 						} else if (nextLetter.i > index) {
 							return (
 								<span key={index} className="letter passed-letter-parent">
-              <div className="passed-letter"><span> <span>{t}</span></span></div>
-            </span>
+              		<div className="passed-letter"><span> <span>{t}</span></span></div>
+            		</span>
 							)
 						} else {
 							return <span key={index} className="letter"><div>{t}</div></span>
 						}
 					} else {
 						return  (
-						
-							
-								<div key={index} className="w-full">
+							<>
+								<div className={[
+									"letter letter", nextLetter.i === index && "active-letter",
+									nextLetter.i > index && "passed-letter-parent"
+								].join(" ")}>
+									<span className={[nextLetter.i > index && "passed-letter"].join(" ")} >⏎</span>
+									<span style={{position: "absolute"}} className="cursor"/>
 								</div>
+								{/*{ console.log(nextLetter.i, index) }*/}
+								<div key={index} className="w-full" />
+							</>
 							
 						)
 					}
-				// } else {
-				// 	return  (
-				// 		<div className="w-full"></div>
-				// 	)
-				// }
-				
 			})
 	
 			}</p>
