@@ -32,9 +32,9 @@ const Keyboard = (props) => {
 		
 	}
 	
-	function renderEachRow(eachRow){
+	function renderEachRow(eachRow, index){
 		return  (
-			<div className='keyboard-row number-row'>
+			<div key={index} className='keyboard-row number-row'>
 				{ eachRow && eachRow.map((eachKey)=> renderKey(eachKey)) }
 			</div>
 		)
@@ -44,7 +44,7 @@ const Keyboard = (props) => {
 		<div>
 			<div className="keyboard-box">
 				<div className="">
-					{ Object.keys(keys).map(eachRow=>renderEachRow(keys[eachRow])) }
+					{ Object.keys(keys).map((eachRow, index)=>renderEachRow(keys[eachRow], index)) }
 				</div>
 				<div className="hands">
 					<img className={"left-img"} src={nextLetter.image.leftHand} alt=""/>

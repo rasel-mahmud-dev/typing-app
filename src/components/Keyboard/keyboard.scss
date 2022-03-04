@@ -1,36 +1,11 @@
 
 
-.keyShift {
+.keyShift, .keyBackspace,.keySpacebar,.keyTab,.keyCaps, .key⏎ {
   flex-basis: 100%;
-  background: #6783ff !important;
-  color: white;
+  //background: #ffffff !important;
+  //color: white;
 }
-.keyEnter  {
-  //flex: 1;
-  flex-basis: 100%;
-  background: #ac8dff !important;
-  color: white;
-}
-.keyCaps{
-  flex-basis: 100%;
-  background: #6783ff !important;
-  color: white;
-}
-.keyTab {
-  flex-basis: 100%;
-  background: #6783ff !important;
-  color: white;
-}
-.keySpacebar{
-  flex-basis: 100%;
-  background: #ac8dff !important;
-  color: white;
-}
-.keybackspace{
-  flex-basis: 100%;
-  background: #ac8dff !important;
-  color: white;
-}
+
 
 .hands{
   display: flex;

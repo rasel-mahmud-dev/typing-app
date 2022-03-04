@@ -14,8 +14,8 @@ function App() {
 
   const [typingState, setTypingState] = useState({
     lessons: [
-      // { id: 1, title: "J, F, and Space", text: "A a" },
-      { id: 1, title: "J, F, and Space", text: "F J  F F F J J F J F J F".toLocaleLowerCase() },
+      { id: 1, title: "J, F, and Space", text: "A a" },
+      // { id: 1, title: "J, F, and Space", text: "F J  F F F J J F J F J F".toLocaleLowerCase() },
       { id: 2, title: "U, R, and K Keys", text: "r r r f r r r f" },
       { id: 3, title: "D, E, and I Keys", text: "d d d d f f f f" },
       { id: 4, title: "C, G, and N Keys", text: "c d c d c c d d" },
@@ -38,9 +38,17 @@ function App() {
       { id: 18, title: "Intermediate Assessment", text: "The serve is the most important stroke in tennis. A good player can serve the ball to any spot on the service court.⏎A ball can also be made to bounce in different ways when it hits the ground. This is done by turning the racket in the hand and putting a spin on the ball when it is struck by the racket.⏎A perfect serve is called an ace. This happens when a serve is so well placed or is hit so hard that it is impossible for the receiver to return the ball. A let is a serve that strikes the top of the net before landing in the proper service court.⏎Because the normal flight of the ball has been interrupted, the receiver has virtually no chance to get to the ball.⏎Here are two simple ways to heat a shelter that cannot use an internal fire.⏎Using these methods there will be no need to spend another cold night again. The first method is to place several football sized rocks in the fire and cook them for an hour or two.⏎Dig a hole in the work area of the shelter about one foot by one foot and six inches deep. After the rocks are hot, remove them with forked sticks and place in the hole. They will keep you warm all night. Be sure to keep all flammable materials from falling on them because it could start a fire or smoke up the shelter.⏎The most important early reading strategy you can remember is to read to your child often. The more you read to your child, the more words she will begin to understand, and the more interest she will take in the reading process. Every parent wants the best start for their children in this life.⏎This is also true for the start we give them when it comes to reading. Studies have proven that children who learn to read at an earlier age have an easier time in school, and are twice as likely to complete levels of higher education than those who struggle to learn at a later age.⏎The serve is the most important stroke in tennis. A good player can serve the ball to any spot on the service court.⏎A ball can also be made to bounce in different ways when it hits the ground. This is done by turning the racket in the hand and putting a spin on the ball when it is struck by the racket.⏎A perfect serve is called an ace. This happens when a serve is so well placed or is hit so hard that it is impossible for the receiver to return the ball. A let is a serve that strikes the top of the net before landing in the proper service court.⏎Because the normal flight of the ball has been interrupted, the receiver has virtually no chance to get to the ball.⏎Here are two simple ways to heat a shelter that cannot use an internal fire.⏎Using these methods there will be no need to spend another cold night again. The first method is to place several football sized rocks in the fire and cook them for an hour or two.⏎Dig a hole in the work area of the shelter about one foot by one foot and six inches deep. After the rocks are hot, remove them with forked sticks and place in the hole. They will keep you warm all night. Be sure to keep all flammable materials from falling on them because it could start a fire or smoke up the shelter.⏎The most important early reading strategy you can remember is to read to your child often. The more you read to your child, the more words she will begin to understand, and the more interest she will take in the reading process. Every parent wants the best start for their children in this life.⏎This is also true for the start we give them when it comes to reading. Studies have proven that children who learn to read at an earlier age have an easier time in school, and are twice as likely to complete levels of higher education than those who struggle to learn at a later age.⏎" },
       { id: 20, title: "Accuracy Focus", text: "Dear Dan,⏎Yes, I came out of the corn back to the city, both to draw and to do copy on the new cars. To date, I am able to put cash in the bank and bear a bill or two. The new deed has done it." },
       { id: 21, title: "Number", text: "01785513535 5d 4p 56 pv 4" },
+      
+      { id: 22, title: "make a variable", type: "word", text: `const name = 'rasel mahmud' ` },
+      { id: 23, title: "make a function", type: "word", text: "function printName(name){ \n console.log(name)}"},
+      { id: 24, title: "create HTML H1 ELEMENT", type: "word", text: "<h1>I am H1 Tag</h1>"},
+      // { id: 25, title: "create HTML H1 ELEMENT", type: "word", text: `:; " ' ? <h1>I am H1 Tag</h1>`}
+      // { id: 25, title: "Enter button", type: "word", text: "name ⏎ name"}
+      { id: 25, title: "Enter button", type: "word", text: "⏎\na b"}
     ]
+    
   })
-
+  
   const params = useParams()
 
   function getLesson(id){

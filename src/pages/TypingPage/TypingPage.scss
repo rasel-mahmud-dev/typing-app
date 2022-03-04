@@ -31,14 +31,15 @@ body{
   }
 }
 
+
+
 .para-text-box{
+  box-shadow: 0 0 12px 6px #b6bdff40;
   box-sizing: border-box;
-  margin-top: 30px;
   position: relative;
   z-index: 100;
   padding: 10px;
-  //box-shadow: 0 0 3px 1px #ebebeb;
-  background: white;
+  background: #ffffff38;
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
@@ -51,6 +52,50 @@ body{
     display: flex;
     flex-wrap: wrap;
     pointer-events: none;
+  }
+  
+  .letter{
+    font-size: 90px;
+    font-weight: 700;
+    width: 40px;
+    color: #393939;
+    margin: 1px;
+    border-radius: 5px;
+    display: flex;
+    min-width: 17px;
+    font-family: poppins, Roboto serif;
+    text-align: center;
+    justify-content: center;
+    &.passed-letter-parent{
+      background: #ff9dd47d;
+    }
+  }
+  .active-letter{
+    color: deeppink;
+    position: relative;
+    display: flex;
+    .cursor{
+      display: block;
+      width: 25px;
+      height: 3px;
+      bottom: 0;
+      background: red;
+      animation: loop 1.5s ease-out infinite;
+    }
+  }
+}
+.word-view{
+  .letter{
+    font-size: 25px;
+    font-weight: 500;
+    width: 20px;
+  }
+  .active-letter{
+    .cursor{
+      display: block;
+      width: 20px;
+      height: 3px;
+    }
   }
 }
 
@@ -99,33 +144,6 @@ body{
   }
 }
 
-.letter{
-  font-size: 30px;
-  font-weight: 500;
-  color: #393939;
-  margin: 1px;
-  border-radius: 5px;
-  display: flex;
-  min-width: 17px;
-  text-align: center;
-  justify-content: center;
-  &.passed-letter-parent{
-    background: #ff9dd47d;
-  }
-}
-.active-letter{
-  color: deeppink;
-  position: relative;
-  display: flex;
-  .cursor{
-    display: block;
-    width: 15px;
-    height: 3px;
-    bottom: 0;
-    background: red;
-    animation: loop 1.5s ease-out infinite;
-  }
-}
 .passed-letter{
   color: #0e0eff85;
   //background: #48fc522b;
@@ -186,7 +204,7 @@ body{
 .modal{
   width: 100%;
   opacity: 0;
-  background: #ffffff;
+  background: #474bff12;
   transform: translateY(-100vh);
   transition: all .5s ease;
   border-radius: 5px;
@@ -203,8 +221,6 @@ body{
   z-index: 100;
 }
 
-.justify-center{justify-content: center;}
-.justify-end{justify-content: flex-end;}
 .justify-space-between{
   justify-content: space-between;
   .btn{
@@ -212,19 +228,6 @@ body{
 }
 .row{
   display: flex;
-}
-
-.p-2{
-  padding: 10px;
-}
-.pl-1{
-  padding-left: 5px;
-}
-.ml-0{
-  margin-left: 0;
-}
-.ml-1{
-  margin-left: 5px;
 }
 
 

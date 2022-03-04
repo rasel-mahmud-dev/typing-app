@@ -127,7 +127,7 @@ function isLeft(word) {
     "A", "S", "T", "D", "F", "G",
     "a", "s", "t", "d", "f", "g",
     "Z", "X", "C", "V", "B",
-    "z", "x", "c", "v", "b"
+    "z", "x", "c", "v", "b",
   ]
   return left.indexOf(word) !== -1
 }
@@ -260,7 +260,7 @@ const TypingPage = (props)=> {
       // "''": doubleQuotation, "'": doubleQuotation,
       "rt-reset": rtReset,
       "lt-reset": ltReset,
-      " ": space,
+      "": space,
     },
     isTyping: false,
     text: [],
@@ -631,169 +631,105 @@ const TypingPage = (props)=> {
     })
   }
 
+ 
   
-  function progress(state,  e, options){
-    if(options.key === 'enter') {
-      let isFinished = (state.nextLetter.i + 1) === state.text.length
-      if (!isFinished) {
-        // other letter keys...
-        // increase paragraph index
-        // console.log(state.nextLetter, state.text)
-        ii += 1
-        let nextWord = state.text[ii + 1]
+  function progress(isFinished,  ii){
+    if (!isFinished) {
+      // other letter keys...
+      // increase paragraph index
+    
+      ii++
+      let nextWord = state.text.slice(1)[ii - 1]
+     
+      if (nextWord) {
+        let updatedState = {...state}
+        let image = {...updatedState.nextLetter.image}
+        if (isLeft(nextWord)) {
+          // change finger for left hand............
+          image.rightHand = updatedState.imgs['rt-reset']
+          image.leftHand = updatedState.imgs[nextWord]
         
-        if (nextWord) {
-          let updatedState = {...state}
-      
-          let image = {...updatedState.nextLetter.image}
-          
-          if (isLeft(nextWord)) {
-            // change finger for left hand............
-            image.rightHand = updatedState.imgs['rt-reset']
-            image.leftHand = updatedState.imgs[nextWord]
-        
-          } else {
-            // change finger for right hand
-            image.rightHand = updatedState.imgs[nextWord]
-            image.leftHand = updatedState.imgs["lt-reset"]
-          }
-      
-          updatedState.nextLetter = {
-            i: ii + 1,
+        } else {
+          // change finger for right hand
+          image.rightHand = updatedState.imgs[nextWord]
+          image.leftHand = updatedState.imgs["lt-reset"]
+        }
+        setState({
+          ...updatedState,
+          nextLetter: {
+            i: ii,
             letter: nextWord,
             image: image
-          }
-          updatedState.currentKey = {
-            code: e.keyCode,
-            i: ii,
-            letter: updatedState.text[ii]
-          }
-          setState(updatedState)
-          keypressSound(true)
-          ii += 1 // skip line break space after click enter button
-        }
-    
+          },
+          currentKey: {code: e.keyCode, i: ii - 1, letter: updatedState.text.slice(1)[ii - 1]}
+        })
+        keypressSound(true)
+      
       } else {
-        finalHit(state, e, options)
-        // finished
-        // ii++
-        // let nextWord = state.text.slice(1)[ii - 1]
-        // let updatedState = {...state}
-        // let image = {...updatedState.nextLetter.image}
-        // if (isLeft(nextWord)) {
-        //   // change finger for left hand............
-        //   image.rightHand = updatedState.imgs['rt-reset']
-        //   image.leftHand = updatedState.imgs[nextWord]
-        //
-        // } else {
-        //   // change finger for right hand
-        //   image.rightHand = updatedState.imgs[nextWord]
-        //   image.leftHand = updatedState.imgs["lt-reset"]
-        // }
-        // setState({
-        //   ...updatedState,
-        //   isCompleted: true,
-        //   isTyping: false,
-        //   totalTimeConsume: Date.now() - startTime,
-        //   nextLetter: {
-        //     i: ii,
-        //     letter: nextWord,
-        //     image: image
-        //   },
-        //   currentKey: {code: e.keyCode, i: ii - 1, letter: updatedState.text.slice(1)[ii - 1]}
+        // i = 0
+        // this.setState(prevState => {
+        //   return {
+        //     nextLetter: {
+        //       ...prevState.nextLetter,
+        //       i: prevState.nextLetter.i + 1, /// so that make color last letter completed
+        //       image: {leftHand: this.state.imgs["lt-reset"], rightHand: this.state.imgs["rt-reset"]}
+        //     },
+        //     isCompleted: true,
+        //     isTyping: false,
+        //     currentKey: {code: e.keyCode, i: i - 1, letter: this.state.text.slice(1)[i - 1]},
+        //     totalTimeConsume: Date.now() - this.startTime
+        //   }
         // })
-        //
-        // ii = 0
-        // // startTime = ""
-        //
         // keypressSound(true)
-    
-        // return {
-        //    nextLetter: {
-        //      ...prevState.nextLetter,
-        //      i: prevState.nextLetter.i + 1, /// so that make color last letter completed
-        //      image: {leftHand: this.state.imgs["lt-reset"], rightHand: this.state.imgs["rt-reset"]}
-        //    },
-        //    isCompleted: true,
-        //    isTyping: false,
-        //    currentKey: {code: e.keyCode, i: i - 1, letter: this.state.text.slice(1)[i - 1]},
-        //    totalTimeConsume: Date.now() - this.startTime
-        // }
-    
       }
+    
     } else {
-      let isFinished = (state.nextLetter.i + 1) === state.text.length
-      if (!isFinished) {
-        ii++
-        let nextWord = state.text[ii]
-  
-        if (nextWord) {
-    
-          let updatedState = {...state}
-    
-          let image = {...updatedState.nextLetter.image}
-    
-          if (isLeft(nextWord)) {
-            // change finger for left hand............
-            image.rightHand = updatedState.imgs['rt-reset']
-            image.leftHand = updatedState.imgs[nextWord]
+      // finished
+      ii++
+      let nextWord = state.text.slice(1)[ii - 1]
+      let updatedState = {...state}
+      let image = {...updatedState.nextLetter.image}
+      if (isLeft(nextWord)) {
+        // change finger for left hand............
+        image.rightHand = updatedState.imgs['rt-reset']
+        image.leftHand = updatedState.imgs[nextWord]
       
-          } else {
-            // change finger for right hand
-            image.rightHand = updatedState.imgs[nextWord]
-            image.leftHand = updatedState.imgs["lt-reset"]
-          }
-    
-          updatedState.nextLetter = {
-            i: ii,
-            letter: nextWord,
-            image: image
-          }
-          updatedState.currentKey = {
-            code: e.keyCode,
-            i: ii - 1,
-            letter: updatedState.text[ii - 1]
-          }
-          setState(updatedState)
-          keypressSound(true)
-        }
-        
-      } else{
-        // finished
-        finalHit(state, e, options)
+      } else {
+        // change finger for right hand
+        image.rightHand = updatedState.imgs[nextWord]
+        image.leftHand = updatedState.imgs["lt-reset"]
       }
-    }
-  }
-  
-  function finalHit(state,  e, options){
-    ii++
-    let nextWord = state.text.slice(1)[ii - 1]
-    let updatedState = {...state}
-    let image = {...updatedState.nextLetter.image}
-    if (isLeft(nextWord)) {
-      // change finger for left hand............
-      image.rightHand = updatedState.imgs['rt-reset']
-      image.leftHand = updatedState.imgs[nextWord]
+      setState({
+        ...updatedState,
+        isCompleted: true,
+        isTyping: false,
+        totalTimeConsume: Date.now() - startTime,
+        nextLetter: {
+          i: ii,
+          letter: nextWord,
+          image: image
+        },
+        currentKey: {code: e.keyCode, i: ii - 1, letter: updatedState.text.slice(1)[ii - 1]}
+      })
     
-    } else {
-      // change finger for right hand
-      image.rightHand = updatedState.imgs[nextWord]
-      image.leftHand = updatedState.imgs["lt-reset"]
+      ii = 0
+      // startTime = ""
+    
+      keypressSound(true)
+    
+      // return {
+      //    nextLetter: {
+      //      ...prevState.nextLetter,
+      //      i: prevState.nextLetter.i + 1, /// so that make color last letter completed
+      //      image: {leftHand: this.state.imgs["lt-reset"], rightHand: this.state.imgs["rt-reset"]}
+      //    },
+      //    isCompleted: true,
+      //    isTyping: false,
+      //    currentKey: {code: e.keyCode, i: i - 1, letter: this.state.text.slice(1)[i - 1]},
+      //    totalTimeConsume: Date.now() - this.startTime
+      // }
+    
     }
-    setState({
-      ...updatedState,
-      isCompleted: true,
-      isTyping: false,
-      totalTimeConsume: Date.now() - startTime,
-      nextLetter: {
-        i: ii,
-        letter: nextWord,
-        image: image
-      },
-      currentKey: {code: e.keyCode, i: ii - 1, letter: updatedState.text.slice(1)[ii - 1]}
-    })
-    ii = 0 // reset index number;
-    keypressSound(true)
   }
   
   
@@ -813,12 +749,13 @@ const TypingPage = (props)=> {
        
         if (state.nextLetter.letter === e.key) {
           let isFinished = (state.nextLetter.i + 1) === state.text.length
-          progress(state,  e, {})
+          progress(isFinished, ii)
         }
         
         // when state.nextLetter.letter === ⏎
         else if(state.nextLetter.letter === "⏎") {
-          progress(state,  e, { key: "enter" })
+          let isFinished = (state.nextLetter.i + 1) === state.text.length
+          progress(isFinished, ii)
           
         } else {
           // wrong key press
