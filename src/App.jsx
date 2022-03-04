@@ -11,7 +11,16 @@ import TypingPageFn from "./pages/TypingPage/TypingPageFn";
 
 
 function App() {
+  //
+  let total = 20
+  let curr = 10
+  
+  console.log((10 / 20) * 100)
+  
 
+  
+
+  
   const [typingState, setTypingState] = useState({
     lessons: [
       { id: 1, title: "J, F, and Space", text: "A a" },
@@ -40,11 +49,11 @@ function App() {
       { id: 21, title: "Number", text: "01785513535 5d 4p 56 pv 4" },
       
       { id: 22, title: "make a variable", type: "word", text: `const name = 'rasel mahmud' ` },
-      { id: 23, title: "make a function", type: "word", text: "function printName(name){ \n console.log(name)}"},
+      { id: 23, title: "make a function", type: "word", text: "function printName(name){\nconsole.log(name)\n}"},
       { id: 24, title: "create HTML H1 ELEMENT", type: "word", text: "<h1>I am H1 Tag</h1>"},
       // { id: 25, title: "create HTML H1 ELEMENT", type: "word", text: `:; " ' ? <h1>I am H1 Tag</h1>`}
       // { id: 25, title: "Enter button", type: "word", text: "name ⏎ name"}
-      { id: 25, title: "Enter button", type: "word", text: "a "}
+      { id: 25, title: "Enter button", type: "word", text: "{} [] a "}
     ]
   })
   

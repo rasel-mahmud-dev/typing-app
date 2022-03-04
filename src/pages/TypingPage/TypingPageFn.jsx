@@ -114,7 +114,10 @@ const code = [
   { code: 188, key: ","}, { code: 188, key: "<", isPressedShift: true},
   { code: 190, key: "."}, { code: 190, key: ">", isPressedShift: true},
   { code: 191, key: "/"}, { code: 191, key: "?", isPressedShift: true},
-  {code: 187, key: "="}
+  
+  { code: 219, key: "["}, { code: 219, key: "{", isPressedShift: true},
+  { code: 221, key: "]"}, { code: 221, key: "}", isPressedShift: true},
+  {code: 187, key: "="}, { code: 187, key: "+", isPressedShift: true},
 ]
 
 
@@ -175,8 +178,13 @@ const TypingPage = (props)=> {
         [{key: "I", code: code["I"]}],
         [{key: "O", code: code["O"]}],
         [{key: "P", code: code["P"]}],
-        [{key: "{", down: "[", code: 189}],
-        [{key: "}", down: "]", code: 187}],
+        
+        // [{key: "{", down: "[", code: 189}],
+        // [{key: "}", down: "]", code: 187}],
+  
+        [{key: "{", code: getKeyCode(189)}, { key: "[", code: getKeyCode(189)}],
+        [{key: "}", code: getKeyCode(187)}, { key: "]", code: getKeyCode(187)}],
+        
         [{key: "|", down: "\\", code: 220}],
       ],
       homeRow: [
@@ -267,6 +275,7 @@ const TypingPage = (props)=> {
     isTyping: false,
     text: [],
     title: "",
+    wrongPress: 0,
     nextLetter: { i: 0, letter: "", image:{ rightHand: "", leftHand: ""  }},
     currentKey: { code: -1, i: 0, letter: ""},
     isCompleted: false,
@@ -284,6 +293,8 @@ const TypingPage = (props)=> {
     },
     ok: false
   })
+  const [wrongPress, setWrongPress] = React.useState(0)
+  
   const params = useParams()
   
   function getKeyCode(letter, isPressedShift=false){
@@ -295,7 +306,7 @@ const TypingPage = (props)=> {
       } else if(letter === "\n"){
         return code.find(c => c.key === letter)
       } else {
-        let space = letter.trim() === "".trim()
+        let space = letter === " "
         if (space) {
           return code.find(c => c.key === "")
         } else {
@@ -626,6 +637,7 @@ const TypingPage = (props)=> {
     updatedState.totalTimeConsume = 0
     updatedState.currentWord = 0
     setState(updatedState)
+    setWrongPress(0)
   }
   
   
@@ -634,6 +646,9 @@ const TypingPage = (props)=> {
     audio.style.opacity = 0
     audio.src = isValid ? keyPressSound : badPressSound
     document.body.appendChild(audio)
+    if(!isValid) {
+      setWrongPress(wrongPress + 1)
+    }
     audio.play().then((_)=>{
       setTimeout(()=>{
         document.body.removeChild(audio)
@@ -812,10 +827,10 @@ const TypingPage = (props)=> {
   
   function handleKeyPress(e){
   
-    // console.log(e.key + " = " + e.keyCode)
+    console.log(e.key + " = " + e.keyCode)
     if(state.isTyping) {
       let keyCode = getKeyCode(state.nextLetter.letter, e.shiftKey)
-      // console.log(keyCode, state.nextLetter.letter)
+      console.log(keyCode, state.nextLetter.letter)
      
       if (keyCode && (e.keyCode === keyCode.code)) {
         
@@ -919,9 +934,19 @@ const TypingPage = (props)=> {
     //
     //   wpm = Math.round(((word + 1) / min) * 60) || 0
     // }
+    
+    let result = "0"
+    let acc = state.text.length -  wrongPress
+    if(wrongPress > state.text.length){
+      result  = "0"
+    } else {
+      result = (acc / state.text.length ) * 100
+    }
+    
     return {
       charPS: Math.round(charPS),
-      time: sec
+      time: sec,
+      accuracy: result
     }
     
   }
@@ -944,6 +969,11 @@ const TypingPage = (props)=> {
           </h1>
           
         </div>
+  
+        { wrongPress > 0 &&  <div className="glass-card error_glass">
+          <h1 className="text-2xl text-center">wrong: {wrongPress}</h1>
+        </div> }
+        
         
         <CountDown isCompleted={state.isCompleted}  isTyping={state.isTyping} />
         
@@ -971,7 +1001,7 @@ const TypingPage = (props)=> {
         <div className="row">
           <div className={["modal", state.isCompleted ? "show-modal  p-2" : ""].join(" ")}>
             <div>
-              <h3 className="modal-title">Accuracy 70%</h3>
+              <h3 className="modal-title">Accuracy {calculateTimeNeed().accuracy}%</h3>
               {state.isCompleted && <h3 className="modal-title">Typing Speed {calculateTimeNeed().charPS} letter per second (lps)</h3> }
               {state.isCompleted && <h3 className="modal-title">Total Consume {state.totalTimeConsume}S</h3> }
               <div className="row justify-space-between p-2">
