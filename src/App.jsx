@@ -14,8 +14,8 @@ function App() {
 
   const [typingState, setTypingState] = useState({
     lessons: [
-      { id: 1, title: "J, F, and Space", text: "AA aa" },
-      // { id: 1, title: "J, F, and Space", text: "A A  B B F J  F F F J J F J F J F" },
+      // { id: 1, title: "J, F, and Space", text: "A a" },
+      { id: 1, title: "J, F, and Space", text: "F J  F F F J J F J F J F".toLocaleLowerCase() },
       { id: 2, title: "U, R, and K Keys", text: "r r r f r r r f" },
       { id: 3, title: "D, E, and I Keys", text: "d d d d f f f f" },
       { id: 4, title: "C, G, and N Keys", text: "c d c d c c d d" },

@@ -1,4 +1,9 @@
 
+
+.App{
+  height: 100vh;
+}
+
 .container{
   @apply max-w-6xl  mx-auto px-4
 }

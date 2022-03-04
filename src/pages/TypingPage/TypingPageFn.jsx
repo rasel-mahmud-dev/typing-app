@@ -210,7 +210,7 @@ const TypingPage = (props)=> {
       ],
       homeRow: [
         [{key: "Caps Lock", code: 20}],
-        [{key: "A", code: 65}],
+        [{key: "A", code: getKeyCode("A")}],
         [{key: "S", code: 83 }],
         [{key: "D", code: 68}],
         [{key: "F", code: 70}],
@@ -252,27 +252,26 @@ const TypingPage = (props)=> {
       x, X:x,
       v, V:v,
       a, A:a,
-      b,
-      c,
-      d,
-      e,
-      f,
-      g,
-      j,
-      J: j,
-      h,s,l,m,n,o,p,
-      i,
-      k,
+      b, B: b,
+      c, C: c,
+      d, D:d,
+      e, E:e,
+      f, F:f,
+      g, G:g,
+      j, J:j,
+      h, H:h, s, S:s, l, L:l, m, M:m, n, N:n, o, O:o, p, P:p,
+      i, I: i,
+      k, K: k,
       "[": leftBrace,
       "]": rightBrace,
       "=": plus,
       "-": minus,
-      q,
-      r: r,
-      t: t,
-      u,
-      y,
-      w,
+      q, Q: q,
+      r: r, R: r,
+      t: t, T: t,
+      u, U:u,
+      y, Y: y,
+      w, W: w,
       "1": one, "!": one,
       "2": two, "@": two,
       "3": three, "#": three,
@@ -312,9 +311,7 @@ const TypingPage = (props)=> {
     },
     ok: false
   })
-  
-  let [val, setVal] = React.useState("");
-  
+
   const params = useParams()
   
   function getKeyCode(letter, isPressedShift=false){
@@ -347,13 +344,21 @@ const TypingPage = (props)=> {
     }
   }, [params.id])
   
-
+  
   React.useEffect(()=>{
-
-    // window.addEventListener("keydown", handler)
-    // return ()=> window.removeEventListener("keydown", handler)
-    
-  }, [val, setVal])
+    if(state.isCompleted) {
+      window.addEventListener("keydown", handleWindowKeyPress)
+    }
+    return ()=> window.removeEventListener("keydown", handleWindowKeyPress)
+  }, [state.isCompleted])
+  
+  
+  
+  function handleWindowKeyPress(e){
+    if(e.keyCode === 13){
+      restartTyping()
+    }
+  }
   
   
   //   let lesson = this.context.getLesson(Number(this.props.params.id))
@@ -629,11 +634,8 @@ const TypingPage = (props)=> {
         image: image
       }
     }
-
-    return {
-      nextLetter: updatedState.nextLetter,
-    }
-  
+    
+    return  updatedState
   }
   
   
@@ -682,21 +684,20 @@ const TypingPage = (props)=> {
     if(state.isTyping) {
   
       let keyCode = getKeyCode(state.nextLetter.letter, e.shiftKey)
-  
       // console.log(keyCode, e.keyCode, e.shiftKey)
       
       if (keyCode && (e.keyCode === keyCode.code)) {
-  
+        
         if (state.nextLetter.letter === e.key) {
   
           let isFinished = (state.nextLetter.i + 1) === state.text.length
+       
           if (!isFinished) {
             // other letter keys...
             // increase paragraph index
             
             ii++
             let nextWord = state.text.slice(1)[ii - 1]
-    
             if (nextWord) {
               let updatedState = {...state}
               let image = {...updatedState.nextLetter.image}
@@ -720,7 +721,7 @@ const TypingPage = (props)=> {
                 currentKey: {code: e.keyCode, i: ii - 1, letter: updatedState.text.slice(1)[ii - 1]}
               })
               keypressSound(true)
-      
+        
             } else {
               // i = 0
               // this.setState(prevState => {
@@ -767,6 +768,10 @@ const TypingPage = (props)=> {
               },
               currentKey: {code: e.keyCode, i: ii - 1, letter: updatedState.text.slice(1)[ii - 1]}
             })
+            
+            ii = 0
+            // startTime = ""
+            
             keypressSound(true)
   
             // return {
@@ -789,10 +794,15 @@ const TypingPage = (props)=> {
         }
         
       } else {
+    
         if(!e.shiftKey) {
+          keypressSound(false)
+        } else if(!keyCode && e.shiftKey) {
           keypressSound(false)
         }
       }
+    } else {
+      // alert("please focus text box")
     }
     
   }
@@ -800,16 +810,15 @@ const TypingPage = (props)=> {
   function handleChange(e){
     let val = textInput.current?.value
     vals = val
-    setVal(val)
   }
   
   
   function handleStartTyping(e){
+
     let post = context.getLesson(Number(params.id))
     let updatedState = onReadyChooseFirstLetter(post.text.split("")[0])
-    
     startTime = Date.now()
-    setState({...state, ...updatedState, isTyping: true})
+    setState({...updatedState, typedText: "A", isTyping: true})
     textInput.current?.focus()
   }
 
@@ -825,33 +834,34 @@ const TypingPage = (props)=> {
   }
   
  
-  // restartTyping=()=>{
-  //   let letterArr =  this.state.text
-  //   this.setState({
-  //     ...this.state,
-  //     isTyping: true,
-  //     nextLetter: { i: 0, letter: letterArr[0], image:{ rightHand: "", leftHand: ""  }},
-  //     currentKey: { code: -1, i: 0, letter: ""},
-  //     isCompleted: false,
-  //     totalTimeConsume: 0,
-  //     currentWord: 0,
-  //     rawText: {
-  //       Z: ``
-  //     },
-  //     isActiveCustomTextBox: false,
-  //   })
-  //   // this.setState({
-  //   //   isTyping: true,
-  //   //   isCompleted: false,
-  //   //   isActiveCustomTextBox: false,
-  //   //   text: letterArr,
-  //   //   nextLetter: { i: 0, letter: this.state.text[0], image:{ rightHand: "", leftHand: ""  }},
-  //   //   currentKey: { code: -1, i: 0, letter: ""},
-  //   // })
-  //   // this.onReadyChooseFirstLetter(letterArr)
-  //   // this.startTime = Date.now()
-  // }
-  //
+  const restartTyping=()=>{
+  
+    let post = context.getLesson(Number(params.id))
+    let updatedState = onReadyChooseFirstLetter(post.text.split("")[0])
+  
+    startTime = Date.now()
+    
+    let letterArr =  state.text
+    updatedState.isTyping= true
+      updatedState.nextLetter = { i: 0, letter: letterArr[0], image:{ rightHand: "", leftHand: ""  }}
+      updatedState.currentKey = { code: -1, i: 0, letter: ""}
+      updatedState.isCompleted = false
+      updatedState.totalTimeConsume = 0
+      updatedState.currentWord = 0
+    setState({ ...updatedState, isTyping: true})
+    textInput.current?.focus()
+    // this.setState({
+    //   isTyping: true,
+    //   isCompleted: false,
+    //   isActiveCustomTextBox: false,
+    //   text: letterArr,
+    //   nextLetter: { i: 0, letter: this.state.text[0], image:{ rightHand: "", leftHand: ""  }},
+    //   currentKey: { code: -1, i: 0, letter: ""},
+    // })
+    // this.onReadyChooseFirstLetter(letterArr)
+    // this.startTime = Date.now()
+  }
+ 
   //
   // render() {
   //   console.log(this.state)
@@ -925,6 +935,23 @@ const TypingPage = (props)=> {
   // };
   
   
+  function calculateTimeNeed(){
+    let wpm = 0
+    let min = ( (Date.now() - startTime ) / 1000  )
+    
+    if(min !== 0) {
+      let word = 0;
+      state.text.forEach(l => {
+        if (l === " ") {
+          word++
+        }
+      })
+      
+      wpm = Math.round(((word + 1) / min) * 60) || 0
+    }
+    return wpm
+  }
+  
   return (
     <div>
       <div className="">
@@ -945,6 +972,22 @@ const TypingPage = (props)=> {
         <div className="">
           { renderParaText() }
         </div>
+  
+  
+        <div className="row">
+          <div className={["modal", state.isCompleted ? "show-modal  p-2" : ""].join(" ")}>
+            <div>
+              <h3 className="modal-title">Accuracy 70%</h3>
+              {state.isCompleted && <h3 className="modal-title">Typing Speed {calculateTimeNeed()}WPM</h3> }
+              <div className="row justify-space-between p-2">
+                {/*<button onClick={this.makeTextToTyingWord} className="btn">Previews Level</button>*/}
+                <button onClick={restartTyping} className="btn">Restart</button>
+                {/*<button onClick={this.makeTextToTyingWord} className="btn">Next Level</button>*/}
+              </div>
+            </div>
+          </div>
+        </div>
+        
         
         
         {!state.isCompleted && <Keyboard
