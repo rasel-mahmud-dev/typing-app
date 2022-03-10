@@ -25,4 +25,4 @@ fortawesome
 # Local Netlify folder
 .netlify
 dist
-fortawesome
+h.html
