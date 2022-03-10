@@ -1,7 +1,34 @@
+html, body {
+  height:100%;
+}
+html{
 
+
+-webkit-tap-highlight-color: transparent;
+  /*background: red;*/
+
+}
+
+body{
+  margin: 0px;
+  padding: 0px;
+  background-image: linear-gradient(314deg, #ff9dd4c7, rgb(133 179 255 / 50%));
+  background-repeat: no-repeat;
+  min-height: max-content;
+  position: relative;
+  width: 100%;
+  height: max-content;
+  display: block;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /*height: 100%;*/
+  background-color: rgba(141, 141, 255, 0.7);
+}
 
 .App{
-  height: 100vh;
+  /*height: 100vh;*/
 }
 
 .container{

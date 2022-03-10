@@ -21,3 +21,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+fortawesome
+# Local Netlify folder
+.netlify
+dist
+fortawesome

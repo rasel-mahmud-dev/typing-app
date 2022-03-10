@@ -1,27 +1,38 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import p from "../../asserts/hands/p.png";
+import TypingContext from "../../state/TypingContext";
 
-
-
-
+import "./renderTextBox.scss";
 
 const RenderTextBox = (props) => {
 	const { nextLetter, text, isTyping, paraType, handleStartTyping, onFocus} = props
+	
+	const context = useContext(TypingContext)
+	
 	
 	function isNewLine(letter){
 		return letter === "\n"
 	}
 	
 	
+
+	
+	
+
+	
+	
 	return (
 		<div onClick={onFocus} className={[
 			"para-text-box",
 			isTyping ? "active-border":"",
+			// context.typingState.fontSize > 35 ?  "letter-view" : "word-view",
 			paraType === "word" ? "word-view" : "letter-view",
-		
 		].join(" ")}>
 		
-			<p>{text && text.map((t, index)=> {
+			<p
+				
+				style={{fontSize: context.typingState.fontSize}}
+			>{text && text.map((t, index)=> {
 				let line = isNewLine(t)
 				
 					if(!line) {

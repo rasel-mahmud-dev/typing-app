@@ -1,7 +1,29 @@
 
+$tablet-width: 950px;
+$sm-width: 576px;
+@mixin down_lg{
+  @media (max-width: #{$tablet-width - 1}){
+    @content;
+  }
+}
+$tablet-width: 950px;
+@mixin down_sm{
+  @media (max-width: #{$sm-width - 1}){
+    @content;
+  }
+}
+
+
+
+@mixin down_md{
+  @media (max-width: 800px){
+    @content;
+  }
+}
+
 
 .keyShift, .keyBackspace,.keySpacebar,.keyTab,.keyCaps, .key⏎ {
-  flex-basis: 100%;
+  //flex-basis: 100%;
   //background: #ffffff !important;
   //color: white;
 }
@@ -11,21 +33,162 @@
   display: flex;
   position: absolute;
   left: -158px;
-  top: -20%;
+  top: -10%;
+  @include down_sm{
+    left: -15px;
+    top: 10%;
+  }
   img{
     height: auto;
     max-width: none;
     width: 100%;
+    @include down_sm{
+      width: 50%;
+    }
   }
-  .left-img, .right-img{
-    //position: absolute;
-    //top: 0;
+  
+  .left-img{
+    top: 14px;
+    left: 11px;
+    @include down_sm{
+      //width: 40%;
+      top: 0px;
+      left: 0px
+    }
+    
   }
-  .left-img{top: -16px; left: -20px}
   .right-img{
     position: absolute;
     left: 456px;
-    top: 36px;
+    top: 20px;
+    @include down_sm{
+      left: 45%;
+      //width: 40%;
+      top: 8%;
+    }
     
+  }
+}
+
+
+.keyboard-box{
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
+  position: relative;
+  .labels{display: flex; align-items: center; padding: 0 4px; justify-content: space-between}
+
+  background: rgba(217, 218, 219, 0.63);;
+  border-radius: 14px;
+  padding-top: 5px ;
+  padding-bottom: 5px ;
+  //height: 272px;
+  //width: 800px;
+  //margin: 20px auto;
+  
+  box-shadow: 0px 0px 1px 1px #c6c6c6;
+  
+  
+  @include down_lg{
+    width: 100%;
+  }
+  .keyboard-row{
+    display: flex;
+    //justify-content: space-between;
+    padding-left: 5px;
+    padding-right: 5px;
+    &.number-row{
+      padding-top: 3px;
+    }
+    
+    .key{
+      //max-width: 40px;
+      //min-width: 48.3px;
+      min-height: 42px;
+      flex-basis: 60px;
+      background: #ffffff;
+      margin: 3px 3px 3px 3px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0px 1px 2px 0px #868686;
+      span{
+        font-size: 14px;
+      }
+  
+  
+      
+      &.keyCaps, &.keyenter, &.keyBackspace{
+        flex-basis: 100px;
+      };
+      &.keyTab{
+        flex-basis: 75px;
+      }
+      &.keyShift{
+        flex-basis: 120px;
+      }
+      &.keySpacebar{
+        flex-basis: 60%;
+      }
+      &.keyCtrl, &.keyWin, &.keyAlt{
+        //flex-basis: 60px;
+        //flex-basis: 60px;
+      }
+  
+      @include down_sm {
+        &.key{
+          min-height: inherit;
+        }
+        &.keyCaps, &.keyenter, &.keyBackspace{
+          flex-basis: 100px !important;
+        }
+        &.keyTab{
+          flex-basis: 85px;
+        }
+        &.keySpacebar {
+          flex-basis: 120%;
+        }
+        .key{
+          //flex: 1;
+          //flex-basis: 40px;
+          //margin-right: 5px;
+        }
+        span {font-size: 9px !important; font-weight: 500}
+      }
+      
+      @include down_sm{
+        .label{
+          display: none;
+        }
+      }
+      
+    }
+  }
+}
+
+.passed-letter{
+  color: #0e0eff85;
+  //background: #48fc522b;
+  display: flex;
+}
+
+@keyframes loop {
+  0%{ opacity: 0 }
+  100%{ opacity: 1 }
+}
+
+.focus{
+  background: deeppink !important;
+  color: white;
+}
+
+@include down_sm{
+  .labels{
+    .label-0{
+      display: none;
+    }
   }
 }

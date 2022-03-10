@@ -1,0 +1,73 @@
+
+.para-text-box{
+  box-shadow: 0 0 12px 6px #b6bdff40;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 100;
+  padding: 10px;
+  background: #ffffff38;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 3px solid #e1e1e1;
+  transition: all .3s ease-in;
+  &.active-border{
+    border: 3px solid #ff65bb9e;
+    box-shadow: 1px 3px 7px -1px #7a7a7a;
+  }
+  &:hover,
+  &:focus{
+    border: 3px solid #ff65bb9e;
+    box-shadow: 1px 3px 7px -1px #7a7a7a;
+  }
+  p{
+    display: flex;
+    flex-wrap: wrap;
+    pointer-events: none;
+  }
+  
+  .letter{
+    //font-size: 90px;
+    //font-weight: 700;
+    //width: 40px;
+    color: #393939;
+    margin: 1px;
+    margin-top: 15px;
+    border-radius: 5px;
+    display: flex;
+    min-width: 8px;
+    font-family: poppins, Roboto serif;
+    text-align: center;
+    justify-content: center;
+    &.passed-letter-parent{
+      background: #ff9dd47d;
+    }
+  }
+  .active-letter{
+    color: deeppink;
+    position: relative;
+    display: flex;
+    .cursor{
+      display: block;
+      width: 25px;
+      height: 3px;
+      bottom: 0;
+      background: red;
+      animation: loop 1.5s ease-out infinite;
+    }
+  }
+}
+.word-view{
+  .letter{
+    //font-size: 25px;
+    font-weight: 500;
+    width: 20px;
+  }
+  .active-letter{
+    .cursor{
+      display: block;
+      width: 20px;
+      height: 3px;
+    }
+  }
+}
