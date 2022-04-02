@@ -40,6 +40,7 @@ import minus from "../../asserts/hands/number_row/minus.png"
 
 import dot from "../../asserts/hands/number_row/dot.png"
 import comma from "../../asserts/hands/number_row/comma.png"
+import semiclone from "../../asserts/hands/number_row/semiclone.png"
 import doubleQuotation from "../../asserts/hands/number_row/cotetion.png"
 import questionMark from "../../asserts/hands/number_row/questionMark.png"
 import tide from "../../asserts/hands/number_row/tide.png"
@@ -62,7 +63,7 @@ import nine from "../../asserts/hands/number_row/9.png"
 
 import Keyboard from "../../components/Keyboard/Keyboard";
 import TypingContext from '../../state/TypingContext';
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import RenderTextBox from "../../components/RenderTextBox/RenderTextBox";
 import TopBar from "./TopBar";
 
@@ -135,9 +136,12 @@ function isLeft(word) {
   ]
   return left.indexOf(word) !== -1
 }
-  let startTime = null
-  let vals = ""
+  
+let startTime = null
+let vals = ""
 let ii = 0
+let isPressedShift2;
+
 
 const TypingPage = (props)=> {
 
@@ -267,6 +271,7 @@ const TypingPage = (props)=> {
       ",": comma, "<": dot,
       "?": questionMark, "/": questionMark,
       "''": doubleQuotation, "'": doubleQuotation,
+      ":": semiclone, ";": semiclone,
       "`": tide, "~": tide,
       // "''": doubleQuotation, "'": doubleQuotation,
       "rt-reset": rtReset,
@@ -288,7 +293,7 @@ const TypingPage = (props)=> {
   })
   const [wrongPress, setWrongPress] = React.useState(0)
   const params = useParams()
-  
+  const navigate = useNavigate()
   
   function getKeyCode(letter, isPressedShift=false){
 
@@ -314,6 +319,7 @@ const TypingPage = (props)=> {
   React.useEffect(()=>{
     if(params.id){
       resetState()
+      // onReadyChooseFirstLetter()
       onReadyChooseFirstLetter()
     }
   }, [params.id])
@@ -341,10 +347,21 @@ const TypingPage = (props)=> {
   }
   
   function handleWindowKeyPress(e){
-    if(state.isCompleted &&  e.keyCode === 13){
+    if(e.keyCode === 16){
+      isPressedShift2 = true
+    } 
+
+    if(state.isCompleted && !isPressedShift2 &&  e.keyCode === 13){
+      isPressedShift2 = false
       setTimeout(()=>{
         onReadyChooseFirstLetter(true)
       }, 0)
+    }
+
+    // if press shift + enter than go to next lesson
+    if(state.isCompleted && isPressedShift2 &&  e.keyCode === 13){
+      onReadyChooseFirstLetter(true, true)
+      isPressedShift2 = false
     }
   }
   
@@ -425,29 +442,40 @@ const TypingPage = (props)=> {
   
   }
   
-
-  function onReadyChooseFirstLetter(isEnterPressed){
+  
+  function onReadyChooseFirstLetter(isEnterPressed, nextLesson){
     let post = context.getLesson(Number(params.id))
     let updatedState = {...state, ...chooseHand(post.text.split("")[0])}
     startTime = Date.now()
 
+    if(isEnterPressed && nextLesson){
+      navigate("/typing/" + (Number(params.id) + 1))
+        post = context.getLesson(Number(params.id) + 1)
+        updatedState = {...state, ...chooseHand(post.text.split("")[0])}
+
+    } else if(isEnterPressed && !nextLesson) {
+      post = context.getLesson(Number(params.id))
+    }
+
+    startTime = Date.now()
+    updatedState.isTyping =  true
+    textInput?.current?.focus()
     updatedState.text = post.text.split("")
     updatedState.type = post.type ? post.type : "char"
     updatedState.title = post.title
-    if(isEnterPressed){
-      updatedState.isTyping =  true
-      textInput?.current?.focus()
-    }
-    updatedState.currentKey = { code: -1, i: 0, letter: ""}
+
+  updatedState.currentKey = { code: -1, i: 0, letter: ""}
     updatedState.isCompleted = false
     updatedState.totalTimeConsume = 0
     updatedState.currentWord = 0
     
-    
+    updatedState.isTyping = true
     setState(updatedState)
     setWrongPress(0)
+    textInput?.current?.focus()
+
+
   }
-  
   
   function keypressSound(isValid){
   
@@ -654,6 +682,9 @@ const TypingPage = (props)=> {
     }
     
   }
+  function handleNextLesson(e){
+
+  }
   
   return (
     <div>
@@ -717,7 +748,8 @@ const TypingPage = (props)=> {
                 {/*<button onClick={this.makeTextToTyingWord} className="btn">Previews Level</button>*/}
                 <button onClick={handleStartTyping} className="btn">Restart</button>
                 <button className="btn">
-                  <Link to={`/typing/${Number(params.id) + 1}`}>Next Level</Link>
+                  {/* <Link onClick={handleNextLesson} to={`/typing/${Number(params.id) + 1}`}>Next Level</Link> */}
+                  <span onClick={handleNextLesson}>Next Level</span>
                 </button>
               </div>
             </div>

@@ -40,3 +40,7 @@ body{
   width: 0px;
   height: 0px
 }
+
+.top_bar{
+  z-index: 1000;
+}

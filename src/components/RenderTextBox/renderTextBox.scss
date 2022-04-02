@@ -35,10 +35,24 @@
     margin-top: 15px;
     border-radius: 5px;
     display: flex;
-    min-width: 8px;
-    font-family: poppins, Roboto serif;
+    background: #ffffff3b;
+    min-width: 41px;
+    font-family: Roboto;
     text-align: center;
     justify-content: center;
+
+
+
+    // color: #393939;
+    // margin: 1px;
+    // margin-top: 15px;
+    // border-radius: 5px;
+    // display: flex;
+    // min-width: 8px;
+    // font-family: poppins, Roboto serif;
+    // text-align: center;
+    // justify-content: center;
+
     &.passed-letter-parent{
       background: #ff9dd47d;
     }

@@ -14,13 +14,18 @@ const RenderTextBox = (props) => {
 		return letter === "\n"
 	}
 	
-	
+	function letterStyles(fontSize){
+		let styles = {fontSize: fontSize + "px", minWidth: fontSize}
+		if(fontSize >= 60){
+			styles.fontWeight = 900
+		}	else if(fontSize >= 40){
+			styles.fontWeight = 600
+		} else if(fontSize < 40){
+			styles.fontWeight = 400
+		}
+		return styles
+	}
 
-	
-	
-
-	
-	
 	return (
 		<div onClick={onFocus} className={[
 			"para-text-box",
@@ -38,7 +43,7 @@ const RenderTextBox = (props) => {
 					if(!line) {
 						if (nextLetter.i === index) {
 							return (
-								<div key={index} className={["letter", isTyping ? "active-letter" : ""].join(" ")}>
+								<div style={letterStyles(context.typingState.fontSize)} key={index} className={["letter", isTyping ? "active-letter" : ""].join(" ")}>
 									<span> <span>{t === " " ? '\u00A0' : t}</span></span>
 									<span style={{position: "absolute"}} className="cursor"/>
 								</div>
@@ -46,17 +51,17 @@ const RenderTextBox = (props) => {
 							
 						} else if (nextLetter.i > index) {
 							return (
-								<span key={index} className="letter passed-letter-parent">
+								<span  style={letterStyles(context.typingState.fontSize)} key={index} className="letter passed-letter-parent">
               		<div className="passed-letter"><span> <span>{t}</span></span></div>
             		</span>
 							)
 						} else {
-							return <span key={index} className="letter"><div>{t}</div></span>
+							return <span style={letterStyles(context.typingState.fontSize)} key={index} className="letter"><div>{t}</div></span>
 						}
 					} else {
 						return  (
 							<>
-								<div className={[
+								<div  style={letterStyles(context.typingState.fontSize)} className={[
 									"letter letter", nextLetter.i === index && "active-letter",
 									nextLetter.i > index && "passed-letter-parent"
 								].join(" ")}>

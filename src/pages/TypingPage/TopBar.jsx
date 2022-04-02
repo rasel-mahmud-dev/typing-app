@@ -10,7 +10,7 @@ const TopBar = ({handleChangeFontSize, handleToggleSpeaker, soundOff}) => {
 	return (
 		<div className="">
 			
-			<header className="bg-gray-50 bg-opacity-20 py-2 shadow-sm">
+			<header className="bg-gray-50 bg-opacity-20 py-2 shadow-sm fixed top-0 left-0 w-full top_bar ">
 				<div className="container">
 					<div className="flex justify-between items-center ">
 						
@@ -32,7 +32,7 @@ const TopBar = ({handleChangeFontSize, handleToggleSpeaker, soundOff}) => {
 					</div>
 				</div>
 			</header>
-			
+			<div className="h-[50px]"></div>
 			
 		</div>
 	);
