@@ -16,6 +16,9 @@ const RenderTextBox = (props) => {
 	
 	function letterStyles(fontSize){
 		let styles = {fontSize: fontSize + "px", minWidth: fontSize}
+		if(paraType && paraType === "word"){
+			styles.minWidth = "max-content"
+		}
 		if(fontSize >= 60){
 			styles.fontWeight = 900
 		}	else if(fontSize >= 40){
@@ -43,26 +46,34 @@ const RenderTextBox = (props) => {
 					if(!line) {
 						if (nextLetter.i === index) {
 							return (
-								<div style={letterStyles(context.typingState.fontSize)} key={index} className={["letter", isTyping ? "active-letter" : ""].join(" ")}>
-									<span> <span>{t === " " ? '\u00A0' : t}</span></span>
+								<div style={letterStyles(context.typingState.fontSize)} key={index} className={["letter", t.trim() === "" ? "white-space" : "", isTyping ? "active-letter" : ""].join(" ")}>
+									<span><span>{t === " " ? '\u00A0' : t }</span></span>
 									<span style={{position: "absolute"}} className="cursor"/>
 								</div>
 							)
 							
 						} else if (nextLetter.i > index) {
 							return (
-								<span  style={letterStyles(context.typingState.fontSize)} key={index} className="letter passed-letter-parent">
+								<span  style={letterStyles(context.typingState.fontSize)} key={index}  className={["letter", t.trim() === "" ? "white-space" : "", "letter passed-letter-parent"].join(" ")}>
               		<div className="passed-letter"><span> <span>{t}</span></span></div>
             		</span>
 							)
 						} else {
-							return <span style={letterStyles(context.typingState.fontSize)} key={index} className="letter"><div>{t}</div></span>
+							return <span 
+								style={letterStyles(context.typingState.fontSize)} 
+								key={index}
+								className={["letter", t.trim() === "" ? "white-space" : ""].join(" ")}>
+									<div>{t} 
+								
+								</div>
+							</span>
 						}
 					} else {
 						return  (
 							<>
 								<div  style={letterStyles(context.typingState.fontSize)} className={[
-									"letter letter", nextLetter.i === index && "active-letter",
+									t.trim() === "" ? "white-space" : "",
+									"letter", nextLetter.i === index && "active-letter",
 									nextLetter.i > index && "passed-letter-parent"
 								].join(" ")}>
 									<span className={[nextLetter.i > index && "passed-letter"].join(" ")} >⏎</span>

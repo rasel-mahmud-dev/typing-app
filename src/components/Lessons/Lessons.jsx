@@ -38,10 +38,10 @@ const Lessons = () => {
                   <div key={test.id + i} className=" flex items-center justify-between hover:bg-pink-500 hover:bg-opacity-20 py-2 px-3 ">
                     <div className="flex items-center">
                       <span className="border text-gray-100 border-primary bg-primary-400 w-5 h-5 p-2 text-xs items-center justify-center flex rounded-full " >{i + 1}</span>
-                      <PreloadLink  className="text-sm" to={`/typing/${test.id}`}><h1 className="ml-4 text-gray-800 text-base">{test.title}</h1> </PreloadLink>
+                      <PreloadLink  className="text-sm" to={`/typing/${lesson.level}/${test.id}`}><h1 className="ml-4 text-gray-800 text-base">{test.title}</h1> </PreloadLink>
                     </div>
                     {/*<button className="bg-indigo-500 text-white px-2 my-0.5 rounded-sm"></button>*/}
-                    <PreloadLink  className="text-sm font-medium" to={`/typing/${test.id}`}>
+                    <PreloadLink  className="text-sm font-medium" to={`/typing/${lesson.level}/${test.id}`}>
                       <FontAwesomeIcon  className="text-green-500" icon={faPlay} />
                     </PreloadLink>
                   </div>

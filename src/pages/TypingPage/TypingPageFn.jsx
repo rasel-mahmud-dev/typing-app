@@ -322,13 +322,20 @@ const TypingPage = (props)=> {
       // onReadyChooseFirstLetter()
       onReadyChooseFirstLetter()
     }
+
+    return ()=>{
+      resetState()
+    }
   }, [params.id])
   
   React.useEffect(()=>{
     if(state.isCompleted) {
       window.addEventListener("keydown", handleWindowKeyPress)
     }
-    return ()=> window.removeEventListener("keydown", handleWindowKeyPress)
+    return ()=> { 
+      // resetState()
+      window.removeEventListener("keydown", handleWindowKeyPress)
+    }
   }, [state.isCompleted])
   
   function resetState(){
@@ -444,17 +451,25 @@ const TypingPage = (props)=> {
   
   
   function onReadyChooseFirstLetter(isEnterPressed, nextLesson){
-    let post = context.getLesson(Number(params.id))
+
+    let post = context.getLesson(params.level, params.id)
+    
+    console.log(params, params.id)
+    if(!post){
+      return 
+    }
+
+
     let updatedState = {...state, ...chooseHand(post.text.split("")[0])}
     startTime = Date.now()
 
     if(isEnterPressed && nextLesson){
-      navigate("/typing/" + (Number(params.id) + 1))
-        post = context.getLesson(Number(params.id) + 1)
+      navigate("/typing/" + params.level +"/" + (Number(params.id) + 1))
+        post = context.getLesson(params.level, Number(params.id) + 1)
         updatedState = {...state, ...chooseHand(post.text.split("")[0])}
 
     } else if(isEnterPressed && !nextLesson) {
-      post = context.getLesson(Number(params.id))
+      post = context.getLesson(params.level, Number(params.id))
     }
 
     startTime = Date.now()
@@ -529,7 +544,7 @@ const TypingPage = (props)=> {
     
       }
     } else {
-      
+      console.log("hi-")
       let updatedState = {...state}
       let isFinished = (state.nextLetter.i + 1) === state.text.length
       if (!isFinished) {

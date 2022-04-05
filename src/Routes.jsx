@@ -11,7 +11,7 @@ const TypingPageFn = ReactLazyPreload(()=>import("./pages/TypingPage/TypingPageF
 export const routes = [{
 	path: "/", component: Lessons,
 }, {
-	path: "/typing/:id", component:TypingPageFn
+	path: "/typing/:level/:id", component:TypingPageFn
 }]
 
 
